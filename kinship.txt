@@ -1,0 +1,12 @@
+module load StdEnv/2023 vcftools/0.1.16
+
+vcftools --gzvcf merged_filtered_miss0.8_mac3_Q30_avgdp3_ind999_REFILT.vcf.gz --relatedness2
+
+vcftools --gzvcf merged_filtered_miss0.8_mac3_Q30_avgdp3_ind999_REFILT.vcf.gz --relatedness2 
+
+
+vcftools --vcf peromysucs_mac3_Q30_miss0.35_dp3_ind99.recode.vcf --relatedness2 --out miss0.35_ind99
+
+vcftools --vcf lm80.vcf --relatedness2
+
+vcftools --vcf peromysucs_mac3_Q30_miss0.35_dp3_ind99.recode.vcf --relatedness2
