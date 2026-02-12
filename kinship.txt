@@ -1,3 +1,4 @@
+salloc --time=1:0:0 --account=def-mcfarlas
 module load StdEnv/2023 vcftools/0.1.16
 
 vcftools --gzvcf merged_filtered_miss0.8_mac3_Q30_avgdp3_ind999_REFILT.vcf.gz --relatedness2
@@ -10,3 +11,10 @@ vcftools --vcf peromysucs_mac3_Q30_miss0.35_dp3_ind99.recode.vcf --relatedness2 
 vcftools --vcf lm80.vcf --relatedness2
 
 vcftools --vcf peromysucs_mac3_Q30_miss0.35_dp3_ind99.recode.vcf --relatedness2
+
+### newest files from Sargon using vcftools
+vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3_ind999.recode.vcf --relatedness2 --out miss0.25ind999
+vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3_ind995.recode.vcf --relatedness2 --out miss0.25ind995
+vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3.recode.vcf --relatedness2 --out miss0.25indall
+
+
