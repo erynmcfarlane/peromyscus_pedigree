@@ -17,4 +17,8 @@ vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3_ind999.recode.vcf --relatedness2
 vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3_ind995.recode.vcf --relatedness2 --out miss0.25ind995
 vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3.recode.vcf --relatedness2 --out miss0.25indall
 
-
+### with relatedness instead of relatedness 2 to give more quant-geny output 
+vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3_ind999.recode.vcf --relatedness --out miss0.25ind999
+vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3_ind995.recode.vcf --relatedness --out miss0.25ind995
+vcftools --vcf peromyscus_mac3_Q30_miss0.25_dp3.recode.vcf --relatedness --out miss0.25indall
+###nevermind, I hate this, it gives tons of NAs
