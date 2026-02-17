@@ -75,3 +75,24 @@ miss_0.25ind995$interp<-ifelse(miss_0.25ind995$RELATEDNESS_PHI>=0.354, "duplicat
 ### way, way fewer NAs in this case (only 49) because the data here are much, much better. 
 
 ### For an A matrix, can double RELATEDNESS_PHI. 
+
+### let's look at who's represented in the NAs
+
+unique(miss_0.25ind995[which(as.factor(miss_0.25ind995$RELATEDNESS_PHI)== "NaN"),1]) ### there are 7 individuals here
+unique(miss_0.25indall[which(as.factor(miss_0.25indall$RELATEDNESS_PHI)== "NaN"),1]) ### there are 426 individuals here
+unique(miss_0.25ind999[which(as.factor(miss_0.25ind999$RELATEDNESS_PHI)== "NaN"),1]) ### there are 77 individuals here
+length(unique(miss_0.25ind995$INDV1)) ### 1078 individuals, relatedness for 1071
+length(unique(miss_0.25indall$INDV1)) ### 1617 individuals, relatedness for 1191
+length(unique(miss_0.25ind999$INDV1)) ### 1243 individuals, relatedness for 1166 ### this is the best data set for us to use, too few snps are being used to assume very close relatedness in the all data set. 
+
+write.csv(miss_0.25ind999, file="pero_relatedness.csv", row.names = FALSE)
+
+###look at duplicates
+miss_0.25indall[which(miss_0.25indall$INDV1 != miss_0.25indall$INDV2 & as.factor(miss_0.25indall$interp) =="duplicate/twin") , ]
+### lots of these probably have too few snps to be able to say this!
+
+#### when I do it with better data, there are no cases like this, with too few SNPs leading to duplicates. 
+miss_0.25ind999[which(miss_0.25ind999$INDV1 != miss_0.25ind999$INDV2 & as.factor(miss_0.25ind999$interp) =="duplicate/twin") , ]
+
+miss_0.25ind995[which(miss_0.25ind995$INDV1 != miss_0.25ind995$INDV2 & as.factor(miss_0.25ind995$interp) =="duplicate/twin") , ]
+### there's only one dodgy case in this data set. 
