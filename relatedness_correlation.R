@@ -74,6 +74,13 @@ miss_0.25ind995$interp<-ifelse(miss_0.25ind995$RELATEDNESS_PHI>=0.354, "duplicat
                                              ifelse(0.0442<=miss_0.25ind995$RELATEDNESS_PHI & miss_0.25ind995$RELATEDNESS_PHI<0.0884, "third_degree", "unrelated"))))
 ### way, way fewer NAs in this case (only 49) because the data here are much, much better. 
 
+### for 999 data
+
+miss_0.25ind999$interp<-ifelse(miss_0.25ind999$RELATEDNESS_PHI>=0.354, "duplicate/twin", 
+                               ifelse(0.177<=miss_0.25ind999$RELATEDNESS_PHI & miss_0.25ind999$RELATEDNESS_PHI <0.354, "first_degree", 
+                                      ifelse(0.0884<=miss_0.25ind999$RELATEDNESS_PHI & miss_0.25ind999$RELATEDNESS_PHI<0.177, "second_degree", 
+                                             ifelse(0.0442<=miss_0.25ind999$RELATEDNESS_PHI & miss_0.25ind999$RELATEDNESS_PHI<0.0884, "third_degree", "unrelated"))))
+
 ### For an A matrix, can double RELATEDNESS_PHI. 
 
 ### let's look at who's represented in the NAs
@@ -96,3 +103,10 @@ miss_0.25ind999[which(miss_0.25ind999$INDV1 != miss_0.25ind999$INDV2 & as.factor
 
 miss_0.25ind995[which(miss_0.25ind995$INDV1 != miss_0.25ind995$INDV2 & as.factor(miss_0.25ind995$interp) =="duplicate/twin") , ]
 ### there's only one dodgy case in this data set. 
+
+write.csv(miss_0.25ind995[which(miss_0.25ind995$INDV1 != miss_0.25ind995$INDV2 & as.factor(miss_0.25ind995$interp) =="duplicate/twin") ,8 ]
+, file="unexpected_duplicates.csv", row.names = F, quote = F)
+### This doesn't make sense, there should be some duplicates!
+
+miss_0.25ind995[which(miss_0.25ind995$interp=="duplicate/twin"),]
+
