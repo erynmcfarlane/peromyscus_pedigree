@@ -110,3 +110,19 @@ write.csv(miss_0.25ind995[which(miss_0.25ind995$INDV1 != miss_0.25ind995$INDV2 &
 
 miss_0.25ind995[which(miss_0.25ind995$interp=="duplicate/twin"),]
 
+### Is there a relationship between the number of SNPs and the unexpectedly low relatedness?
+
+read.table("summary.txt")->variants
+head(variants)
+names(variants)<-c("INDV1", "SNPcounts")
+
+read.csv("Vince_test.csv")->vincetest
+merge(vincetest, variants, by="INDV1")->vince_test_variants
+
+write.csv(vince_test_variants, file="vince_test_variants.csv", row.names = F, quote = F)
+cor.test(vince_test_variants$RELATEDNESS_PHI, vince_test_variants$SNPcounts)
+## I think that this is the answer. There are lots of individuals here who have relatively few SNPs, they must just not be the same SNPs as the replicate. 
+
+
+
+
