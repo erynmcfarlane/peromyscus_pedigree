@@ -123,6 +123,10 @@ write.csv(vince_test_variants, file="vince_test_variants.csv", row.names = F, qu
 cor.test(vince_test_variants$RELATEDNESS_PHI, vince_test_variants$SNPcounts)
 ## I think that this is the answer. There are lots of individuals here who have relatively few SNPs, they must just not be the same SNPs as the replicate. 
 
+##### new variant calling relatedness
+read.table("miss0.3ind99.relatedness2", header=T)->miss_0.3ind99
+read.table("miss0.3ind80.relatedness2", header=T)->miss_0.3ind80
 
 
+### for both of these, need to compare how well we've looked at the duplicate individuals and determined whether they are appropriately closely related. \
 

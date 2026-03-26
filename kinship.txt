@@ -35,3 +35,11 @@ for f in *.txt; do
     /Total variants:/ {getline; print id "\t" $1}
   ' "$f"
 done > summary.txt
+
+
+#### relatedness with newly filtered
+vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind99_maf001.recode.vcf --relatedness2 --out miss0.3ind99
+
+vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind80_maf001.recode.vcf --relatedness2 --out miss0.3ind80
+
+peromyscus_mac3_Q20_miss0.3_dp3_ind80_maf001
