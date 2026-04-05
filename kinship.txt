@@ -43,3 +43,9 @@ vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind99_maf001.recode.vcf --related
 vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind80_maf001.recode.vcf --relatedness2 --out miss0.3ind80
 
 peromyscus_mac3_Q20_miss0.3_dp3_ind80_maf001
+
+
+###newly filtered April 2
+bcftools stats peromyscus_mac3_Q20_miss0.3_dp3_ind10_maf01.recode.vcf > peromyscus_mac3_Q20_miss0.3_dp3_ind10_maf01.recode.vcf.stats.txt
+
+vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind10_maf01.recode.vcf --relatedness2 --out miss0.3ind10

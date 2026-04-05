@@ -124,9 +124,35 @@ cor.test(vince_test_variants$RELATEDNESS_PHI, vince_test_variants$SNPcounts)
 ## I think that this is the answer. There are lots of individuals here who have relatively few SNPs, they must just not be the same SNPs as the replicate. 
 
 ##### new variant calling relatedness
-read.table("miss0.3ind99.relatedness2", header=T)->miss_0.3ind99
+read.table("miss0.3ind99.relatedness2", header=T)->miss_0.3ind99 ###
+paste(miss_0.3ind99$INDV1, miss_0.3ind99$INDV2)->miss_0.3ind99$pair
 read.table("miss0.3ind80.relatedness2", header=T)->miss_0.3ind80
-
+paste(miss_0.3ind80$INDV1, miss_0.3ind80$INDV2)->miss_0.3ind80$pair
 
 ### for both of these, need to compare how well we've looked at the duplicate individuals and determined whether they are appropriately closely related. \
+miss_0.3ind99$interp<-ifelse(miss_0.3ind99$RELATEDNESS_PHI>=0.354, "duplicate/twin", 
+                             ifelse(0.177<=miss_0.3ind99$RELATEDNESS_PHI & miss_0.3ind99$RELATEDNESS_PHI <0.354, "first_degree", 
+                                    ifelse(0.0884<=miss_0.3ind99$RELATEDNESS_PHI & miss_0.3ind99$RELATEDNESS_PHI<0.177, "second_degree", 
+                                           ifelse(0.0442<=miss_0.3ind99$RELATEDNESS_PHI & miss_0.3ind99$RELATEDNESS_PHI<0.0884, "third_degree", "unrelated"))))
 
+miss_0.3ind80$interp<-ifelse(miss_0.3ind80$RELATEDNESS_PHI>=0.354, "duplicate/twin", 
+                             ifelse(0.177<=miss_0.3ind80$RELATEDNESS_PHI & miss_0.3ind80$RELATEDNESS_PHI <0.354, "first_degree", 
+                                    ifelse(0.0884<=miss_0.3ind80$RELATEDNESS_PHI & miss_0.3ind80$RELATEDNESS_PHI<0.177, "second_degree", 
+                                           ifelse(0.0442<=miss_0.3ind80$RELATEDNESS_PHI & miss_0.3ind80$RELATEDNESS_PHI<0.0884, "third_degree", "unrelated"))))
+
+read.csv("Vince_test.csv")->vincetest
+merge(vincetest, miss_0.3ind99, by="pair", all.x=TRUE, all.y=FALSE)->vince_test_miss_0.3ind99
+merge(vincetest, miss_0.3ind80, by="pair", all.x=TRUE, all.y=FALSE)->vince_test_miss_0.3ind80
+
+
+###April 2
+
+read.table("miss0.3ind10.relatedness2",header=T)->miss0.3ind10
+paste(miss0.3ind10$INDV1, miss0.3ind10$INDV2)->miss0.3ind10$pair
+miss0.3ind10$interp<-ifelse(miss0.3ind10$RELATEDNESS_PHI>=0.354, "duplicate/twin", 
+                            ifelse(0.177<=miss0.3ind10$RELATEDNESS_PHI & miss0.3ind10$RELATEDNESS_PHI <0.354, "first_degree", 
+                                   ifelse(0.0884<=miss0.3ind10$RELATEDNESS_PHI & miss0.3ind10$RELATEDNESS_PHI<0.177, "second_degree", 
+                                          ifelse(0.0442<=miss0.3ind10$RELATEDNESS_PHI & miss0.3ind10$RELATEDNESS_PHI<0.0884, "third_degree", "unrelated"))))
+
+summary(as.factor(miss0.3ind10$interp))
+### when I do this, they're allllllll related. Because there's so few snps, and there's so few different alleles at each of the SNPs. 

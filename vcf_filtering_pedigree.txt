@@ -6,6 +6,8 @@
 #SBATCH --mem=8G
 
 %% START BACK HERE AND RUN AGAIN 0.4
+
+
 vcftools --gzvcf /home/mcfarlas/projects/def-mcfarlas/peromyscus/vcfs/merged_all_samples.vcf.gz --mac 3 --minQ 20 --max-missing 0.4 --minDP 3 --recode --recode-INFO-all --out peromyscus_mac3_Q20_miss0.4_dp3
 
 vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3.recode.vcf --missing-indv --out missing_indv
@@ -23,3 +25,52 @@ vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind80.recode.vcf \
     --recode \
     --recode-INFO-all \
     --out peromyscus_mac3_Q20_miss0.3_dp3_ind80_maf001
+    
+    
+### Suggestion from https://esj-journals.onlinelibrary.wiley.com/doi/10.1002/1438-390X.12192 suggests extremely high call rates (>0.9)
+
+vcftools --gzvcf /home/mcfarlas/projects/def-mcfarlas/peromyscus/vcfs/merged_all_samples.vcf.gz --missing-indv --out missing_indv
+
+### this is the line that allows for individual level missingness. Sargon had it set as >0.8, let's see how many individuals are cut at >0.5
+mawk '$5 > 0.999' missing_indv.imiss | cut -f1 > lowDP.indv 
+
+vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3.recode.vcf \
+--remove  lowDP.indv \
+--recode \
+--recode-INFO-all \
+--out peromyscus_ind0.999
+
+vcftools --vcf peromyscus_ind0.999.recode.vcf --minQ 20 --max-missing 0.55 --recode --recode-INFO-all --out peromyscus_Q20_miss0.55
+
+vcftools --vcf peromyscus_Q20_miss0.55.recode.vcf --missing-indv --out individual_stats
+
+bcftools stats peromyscus_Q20_miss0.55.recode.vcf > peromyscus_Q20_miss0.55.recode.vcf.stats.txt
+
+
+
+### filter SNPs first and call rate second, but being more stringent on call rate than Sargon was
+vcftools --gzvcf /home/mcfarlas/projects/def-mcfarlas/peromyscus/vcfs/merged_all_samples.vcf.gz --minQ 20 --max-missing 0.4 --minDP 3 --recode --recode-INFO-all --out peromyscus_mac3_Q20_miss0.4_dp3
+
+vcftools --vcf peromyscus_mac3_Q20_miss0.4_dp3.recode.vcf --missing-indv --out missing_indv
+
+mawk '$5 > 0.1' missing_indv.imiss | cut -f1 > lowDP.indv 
+
+vcftools --vcf peromyscus_mac3_Q20_miss0.4_dp3.recode.vcf \
+--remove  lowDP.indv \
+--recode \
+--recode-INFO-all \
+--out peromyscus_mac3_Q20_miss0.3_dp3_ind10
+
+vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind10.recode.vcf \
+    --maf 0.001 \
+    --recode \
+    --recode-INFO-all \
+    --out peromyscus_mac3_Q20_miss0.3_dp3_ind10_maf01
+    
+    
+### that gave too few SNPs, which aren't variable, and as a result, everyone is related. 
+
+
+#### We can say with some certainty that we're trying to estimate relatedness in an ADMIXED population. This is not trivial.
+### read this: https://pmc.ncbi.nlm.nih.gov/articles/PMC6169378/
+
