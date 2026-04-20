@@ -73,4 +73,11 @@ vcftools --vcf peromyscus_mac3_Q20_miss0.3_dp3_ind10.recode.vcf \
 
 #### We can say with some certainty that we're trying to estimate relatedness in an ADMIXED population. This is not trivial.
 ### read this: https://pmc.ncbi.nlm.nih.gov/articles/PMC6169378/
+### "If there are however, proportionately few relatives in the sample, then estimation under the admixture model should be reliable. For samples with rampant relatedness, pedigree estimation, or using methods that rely on linkage information may be more appropriate."
+
+### read this: https://www.cell.com/AJHG/fulltext/S0002-9297(12)00309-6
+
+### mght be exactly what we need: https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13810
+
+
 
