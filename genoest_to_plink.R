@@ -23,6 +23,7 @@ genoest_fixed<-genoest[,c(2:122, 124:8612, 8614:13489, 13491:14085, 14087:21446)
 genoest_calls<-as.data.frame(ifelse(genoest_fixed[,2:21441]>1.8, 2, ifelse(genoest_fixed[,2:21441]<1.2, 0, 1)))
 
 genoest_calls_matrix<-as.matrix(genoest_calls)
+write.table(genoest_calls_matrix, file="genoest_calls_matrix.txt", quote = F, row.names = F, sep="\t")
 ###this looks like it does what we want to some extent, worth working through the vignette
 
 ##https://github.com/StoreyLab/popkin
