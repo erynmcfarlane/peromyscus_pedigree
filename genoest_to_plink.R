@@ -35,17 +35,20 @@ plot_popkin(kinship)
 
 pairwise_fst <- pwfst(kinship)
 
+
 ### Let's get a plink and map file so that other analyses can be run.
 genoest_ped_sample_info<-cbind.data.frame(c(1:length(genoest_calls[,1])), genoest[,1], NA, NA, NA, NA)
 names(genoest_ped_sample_info)<-c("fam", "id", "dad", "mom", "sex", "pheno")
+### need to write something here so that I get two columns per SNP, or get a different .ped style out. 
 genoest_ped<- cbind.data.frame(genoest_ped_sample_info, genoest_calls_matrix)
 
-write.csv(genoest_ped, file="genoest_21k_genocalls.ped", row.names = FALSE, quote = FALSE)
+write.table(genoest_ped, file="genoest_21k_genocalls.ped", row.names = FALSE, quote = FALSE, sep="\t")
 
 ###waiting for metadata from Sargon, but shouldn't matter for ped purposes, so faux .map file
 chromosomes<-sample(c(1:24), 21440, replace=T)
 names(genoest_calls)
-basepair.coordinate<-rnorm(21440, 300000, 50000)
-dummy_map<-cbind.data.frame(chromosomes, names(genoest_calls), basepair.coordinate )
+basepair.coordinate<-sample(1:10000000, 21440, replace=T)
+dummy_map<-cbind.data.frame(chromosomes, names(genoest_calls), 0, basepair.coordinate )
+names(dummy_map)<-c()
 
-write.csv(dummy_map, file="genoest_21k_genocalls.map", row.names=FALSE, quote=FALSE)
+write.table(dummy_map, file="genoest_21k_genocalls.map", row.names=FALSE, quote=FALSE, sep="\t")
