@@ -53,3 +53,27 @@ dummy_map<-cbind.data.frame(chromosomes, names(genoest_calls), 0, basepair.coord
 names(dummy_map)<-c()
 
 write.table(dummy_map, file="genoest_21k_genocalls.map", row.names=FALSE, quote=FALSE, sep="\t")
+
+
+###going to try running gemma to get the kinship from there###
+
+###gemma runs locally as "~/gemma"
+SNPs<-t(genoest_calls_matrix)
+SNPs_bimbam<- cbind(1:length(rowMeans(SNPs)), rowMeans(SNPs), rowMeans(SNPs), SNPs) ### this is what makes it into a bimbam file we need
+
+write.table(SNPs_bimbam, row.names = FALSE, col.names = FALSE, file="SNPs.txt")
+
+###needs a phenotype file, but I can give it a dummy one?
+
+y_quant<-rnorm(length(genoest_calls_matrix[,1]), 0, 1)
+hist(y_quant)
+write.table(y_quant, row.names=FALSE, col.names=FALSE, file="y_quant.txt")
+### better than this would be to add q from admixture so that it's included in the analysis as a non-snp snp. 
+###have asked Sargon for this
+
+system("~/gemma -g SNPs.txt -p y_quant.txt -gk 1 -o relmatrix", wait=TRUE) 
+system("~/gemma -g SNPs.txt -p y_quant.txt -gk 2 -o relmatrix", wait=TRUE) ###gk 2 gives us standardized matrix
+
+read.table("./output/relmatrix.cXX.txt")->relmatrix
+read.table("./output/relmatrix.sXX.txt")->relmatrix_std
+
