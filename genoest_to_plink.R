@@ -59,21 +59,34 @@ write.table(dummy_map, file="genoest_21k_genocalls.map", row.names=FALSE, quote=
 
 ###gemma runs locally as "~/gemma"
 SNPs<-t(genoest_calls_matrix)
+read.table("peromyscus_mac3_Q30_miss0.25_dp3_ind999_maf001_admixture_ready.2.Q")->Qscores
+Qscores[,1]->q_leucopus
+Qscores_bimbam<-noquote(c("q_leucopus", mean(q_leucopus), mean(q_leucopus), q_leucopus))
 SNPs_bimbam<- cbind(1:length(rowMeans(SNPs)), rowMeans(SNPs), rowMeans(SNPs), SNPs) ### this is what makes it into a bimbam file we need
 
-write.table(SNPs_bimbam, row.names = FALSE, col.names = FALSE, file="SNPs.txt")
+SNPs_q_bimbam<-noquote(rbind(SNPs_bimbam,Qscores_bimbam))
+write.table(SNPs_bimbam, row.names = FALSE, col.names = FALSE, file="SNPs_q.txt")
 
 ###needs a phenotype file, but I can give it a dummy one?
 
-y_quant<-rnorm(length(genoest_calls_matrix[,1]), 0, 1)
+y_quant<-rnorm(length(genoest_calls_matrix[,1]), 0, 1) ###obs, this is simulated data, replace with vector when available
 hist(y_quant)
 write.table(y_quant, row.names=FALSE, col.names=FALSE, file="y_quant.txt")
 ### better than this would be to add q from admixture so that it's included in the analysis as a non-snp snp. 
 ###have asked Sargon for this
 
 system("~/gemma -g SNPs.txt -p y_quant.txt -gk 1 -o relmatrix", wait=TRUE) 
+system("~/gemma -g SNPs_q.txt -notsnp -p y_quant.txt -gk 1 -o relmatrix_q", wait=TRUE) ###have now added q as a covariate here
 system("~/gemma -g SNPs.txt -p y_quant.txt -gk 2 -o relmatrix", wait=TRUE) ###gk 2 gives us standardized matrix
 
 read.table("./output/relmatrix.cXX.txt")->relmatrix
+read.table("./output/relmatrix_q.cXX.txt")->relmatrix_q
+
 read.table("./output/relmatrix.sXX.txt")->relmatrix_std
 
+
+cor(c(as.matrix(relmatrix)), c(as.matrix(relmatrix_q))) ###these two are extremely highly correlated!
+
+summary(c(as.matrix(relmatrix)))
+summary(c(as.matrix(relmatrix_q)))
+summary(c(as.matrix(relmatrix_std)))
